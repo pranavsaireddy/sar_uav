@@ -4,6 +4,44 @@
 
 ---
 
+## Quick Start (pre-trained model)
+
+Clone, download weights, install deps, and run — no training required.
+
+```bash
+# 1. Clone
+git clone https://github.com/pranavsaireddy/sar_uav.git
+cd sar_uav
+
+# 2. Download pre-trained weights (~181 MB)
+python download_weights.py
+# Places best_sar_model.pt in checkpoints/
+
+# 3. Python environment
+cd backend
+python -m venv venv
+venv\Scripts\activate          # Windows
+# source venv/bin/activate     # Linux/macOS
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu124
+pip install -r requirements.txt
+cd ..
+
+# 4. Frontend
+cd frontend && npm install && cd ..
+
+# 5. Start backend (from project root)
+backend/venv/Scripts/uvicorn backend.api.main:app --host 0.0.0.0 --port 8000 --reload
+
+# 6. Start frontend (new terminal)
+cd frontend && npm run dev
+```
+
+Open **http://localhost:5173** — go to Upload, drop any RGB + thermal image pair, get detections.
+
+> **No GPU?** The backend runs on CPU automatically — inference will be slower (~500 ms/frame vs ~15 ms on CUDA).
+
+---
+
 ## What This Is
 
 A production-quality AI system that fuses RGB + thermal (IR) camera feeds from a UAV to detect human survivors in disaster scenarios. It solves a core problem:
@@ -179,8 +217,9 @@ Best checkpoint saved to `backend/checkpoints/best_sar_model.pt`
 ## Phase 4 — Backend API
 
 ```bash
-cd backend
-uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
+# Run from project root (not backend/) — imports use the backend. prefix
+cd sar_uav
+backend/venv/Scripts/uvicorn backend.api.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
 Swagger UI at **http://localhost:8000/docs**
