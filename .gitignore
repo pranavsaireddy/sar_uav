@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environment
+backend/venv/
+venv/
+env/
+.env
+.env.*
+
+# Model checkpoints & large data
+checkpoints/
+data/
+logs/
+runs/
+
+# Node / frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Nested project copy (stale duplicate from initial setup)
+sar_system/
+
+# Temp / cache
+*.tmp
+*.log
+.pytest_cache/
+.mypy_cache/
+htmlcov/
+.coverage
