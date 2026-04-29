@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/checkpoints:/app/checkpoints
+      - ./backend/data:/app/data
+      - ./backend/logs:/app/logs
+    environment:
+      - MODEL_PATH=checkpoints/best_sar_model.pt
+      - MODEL_MODE=full
+      - IMG_SIZE=320
+      - CONF_THRESHOLD=0.45
+      - DEVICE=cuda
+      - CORS_ORIGINS=http://localhost:5173,http://localhost:3000
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
